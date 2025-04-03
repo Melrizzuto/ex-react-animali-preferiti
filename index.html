@@ -1,0 +1,64 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I miei animali Preferiti</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- React (per creare componenti) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <!-- ReactDOM (per renderizzare i componenti nel DOM) -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- babel per supportare JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <h1>I miei animali Preferiti</h1>
+    </header>
+    <main>
+        <figure>
+            <img src="https://picsum.photos/400/300" alt="Immagine Casuale">
+        </figure>
+        <div class="lista-animali"></div>
+    </main>
+    <footer>
+        <p>Creato con amore da... un collega sbadato! 🐾</p>
+    </footer>
+</body>
+<script type="text/babel">
+    const myComponent = () => {
+
+        const animali = ["mucca", "leone", "serpente", "elefante", "gatto", "cane"]
+
+
+        return (
+            <details>
+                <summary>
+                    "Animali"
+                </summary>
+                <div>
+                    <ul>
+                        {animali.map((animale, index) => (
+                            <li key={index}>{animale}</li>
+                        ))}
+
+
+                    </ul>
+                </div>
+
+            </details>
+        );
+
+        const rootElement = document.querySelector(".lista-animali")
+        const root = ReactDOM.createRoot(rootElement)
+        root.render(<ListaAnimali />)
+    }
+
+</script>
+
+</html>
