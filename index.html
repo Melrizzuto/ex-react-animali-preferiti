@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <!-- ReactDOM (per renderizzare i componenti nel DOM) -->
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <!-- babel per supportare JSX -->
+    <!-- Babel (per supportare JSX nel browser) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
@@ -20,21 +20,29 @@
     <header>
         <h1>I miei animali Preferiti</h1>
     </header>
+
     <main>
+        <!-- Immagine casuale per decorare la pagina -->
         <figure>
             <img src="https://picsum.photos/400/300" alt="Immagine Casuale">
         </figure>
+
+        <!-- Contenitore dove verrà montata la lista degli animali -->
         <div class="lista-animali"></div>
     </main>
+
     <footer>
         <p>Creato con amore da... un collega sbadato! 🐾</p>
     </footer>
 
+    <!-- Script React + JSX -->
     <script type="text/babel">
+        // Importazione di useState da React
         const { useState } = React;
+        // Importazione di createPortal da ReactDOM (per usare i portali)
         const { createPortal } = ReactDOM;
 
-        // Modal
+        // Componente Modal: viene mostrato solo se "show" è true
         function Modal({ title, content, show = false, onClose = () => { }, onConfirm = () => { } }) {
             return show && createPortal(
                 <div className="modal-container">
@@ -47,45 +55,51 @@
                         </div>
                     </div>
                 </div>,
-                document.body
+                document.body // Il modal viene montato nel <body> fuori dall'albero DOM principale
             );
         }
 
-        // Lista degli animali
+        // Componente principale che gestisce la lista degli animali
         const AnimalList = () => {
             const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
-            const [animals, setAnimals] = useState([]);
-            const [show, setShow] = useState(false);
-            const [animalName, setAnimalName] = useState("");
+            const [animals, setAnimals] = useState([]); // Stato per la lista degli animali
+            const [show, setShow] = useState(false);    // Stato per mostrare/nascondere il modal
+            const [animalName, setAnimalName] = useState(""); // Stato per il nome inserito dall’utente
 
+            // Funzione per aggiungere un nuovo animale alla lista
             const addNewAnimal = () => {
-                if (!animalName) return;
-                setAnimals(curr => [...curr, animalName]);
-                setAnimalName("");
-                setShow(false);
+                if (!animalName) return; // Se il campo è vuoto, non fare nulla
+                setAnimals(curr => [...curr, animalName]); // Aggiunge il nuovo animale alla lista
+                setAnimalName(""); // Reset del campo input
+                setShow(false);    // Chiude il modal
             };
 
             return (
                 <div>
+                    {/* Bottone per aprire il modal */}
                     <button onClick={() => setShow(true)}>Aggiungi Animale</button>
+
+                    {/* Sezione espandibile con elenco degli animali */}
                     <details>
                         <summary>Animali</summary>
                         <ul>
                             {animals.map((animal, index) => (
-                                <li key={index}>{animal}</li>
+                                <li key={index}>{animal}</li> // Ogni animale è un <li> con chiave univoca
                             ))}
                         </ul>
                     </details>
+
+                    {/* Componente Modal con input e azioni */}
                     <Modal
                         show={show}
-                        onClose={() => setShow(false)}
-                        onConfirm={addNewAnimal}
+                        onClose={() => setShow(false)} // Chiude il modal
+                        onConfirm={addNewAnimal}       // Aggiunge l’animale alla conferma
                         title="Aggiungi animale"
                         content={
                             <input
                                 type="text"
                                 value={animalName}
-                                onChange={e => setAnimalName(e.target.value)}
+                                onChange={e => setAnimalName(e.target.value)} // Aggiorna il valore mentre si digita
                             />
                         }
                     />
@@ -93,10 +107,10 @@
             );
         };
 
-        const rootElement = document.querySelector(".lista-animali");
-        const root = ReactDOM.createRoot(rootElement);
-        root.render(<AnimalList />);
-
+        // Montaggio del componente React nella pagina
+        const rootElement = document.querySelector(".lista-animali"); // Seleziona il contenitore
+        const root = ReactDOM.createRoot(rootElement);                // Crea la "radice" React
+        root.render(<AnimalList />);                                  // Monta il componente
     </script>
 </body>
 
